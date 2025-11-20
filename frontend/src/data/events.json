@@ -1,0 +1,19 @@
+[
+  {
+    "id": 1,
+    "title": "Summer Concert 2024",
+    "date": "2024-06-15",
+    "location": "Mumbai, India",
+    "image": null,
+    "description": "An amazing summer concert event"
+  },
+  {
+    "id": 2,
+    "title": "Corporate Gala Night",
+    "date": "2024-07-20",
+    "location": "Delhi, India",
+    "image": null,
+    "description": "Elegant corporate event"
+  }
+]
+
