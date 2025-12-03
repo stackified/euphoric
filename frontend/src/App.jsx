@@ -4,6 +4,8 @@ import { Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import CookieBanner from './components/CookieBanner'
+import Alert from './components/Alert'
+import { AlertProvider, useAlertContext } from './context/AlertContext'
 
 // Pages
 import Home from './pages/Home'
@@ -17,7 +19,9 @@ import Links from './pages/Links'
 import Feedbacks from './pages/Feedbacks'
 import Enquiry from './pages/Enquiry'
 
-function App() {
+const AppContent = () => {
+  const { alert, hideAlert } = useAlertContext()
+
   return (
     <div className="min-h-screen bg-black">
       <Navbar />
@@ -37,7 +41,23 @@ function App() {
       </main>
       <Footer />
       <CookieBanner />
+      {alert && (
+        <Alert
+          type={alert.type}
+          message={alert.message}
+          onClose={hideAlert}
+          duration={alert.duration}
+        />
+      )}
     </div>
+  )
+}
+
+function App() {
+  return (
+    <AlertProvider>
+      <AppContent />
+    </AlertProvider>
   )
 }
 

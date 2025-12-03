@@ -17,17 +17,19 @@ const createTransporter = () => {
 // Create enquiry
 export const createEnquiry = async (req, res) => {
   try {
+    // Validation handled by middleware
     const { name, phone, email, message } = req.body
 
-    // Validation
-    if (!name || !email || !message) {
-      return res.status(400).json({ error: 'Name, email, and message are required' })
-    }
+    // Additional sanitization
+    const sanitizedName = name.trim().substring(0, 100)
+    const sanitizedEmail = email.trim().toLowerCase().substring(0, 255)
+    const sanitizedPhone = phone ? phone.trim().replace(/[^0-9+\-() ]/g, '').substring(0, 20) : null
+    const sanitizedMessage = message.trim().substring(0, 2000)
 
-    // Save to database
+    // Save to database using prepared statements
     const [result] = await pool.execute(
       'INSERT INTO enquiries (name, phone, email, message) VALUES (?, ?, ?, ?)',
-      [name, phone || null, email, message]
+      [sanitizedName, sanitizedPhone, sanitizedEmail, sanitizedMessage]
     )
 
     // Send email if configured
@@ -40,11 +42,11 @@ export const createEnquiry = async (req, res) => {
           subject: `New Enquiry from ${name}`,
           html: `
             <h2>New Enquiry Received</h2>
-            <p><strong>Name:</strong> ${name}</p>
-            <p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
-            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Name:</strong> ${sanitizedName}</p>
+            <p><strong>Phone:</strong> ${sanitizedPhone || 'Not provided'}</p>
+            <p><strong>Email:</strong> ${sanitizedEmail}</p>
             <p><strong>Message:</strong></p>
-            <p>${message}</p>
+            <p>${sanitizedMessage.replace(/\n/g, '<br>')}</p>
           `,
         })
       } catch (emailError) {

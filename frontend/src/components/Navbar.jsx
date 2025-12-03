@@ -23,7 +23,6 @@ const Navbar = () => {
     { path: '/gallery', label: 'GALLERY' },
     { path: '/videos', label: 'VIDEOS' },
     { path: '/services', label: 'SERVICES' },
-    { path: '/about', label: 'ABOUT' },
     { path: '/feedbacks', label: 'FEEDBACK' },
     { path: '/contact', label: 'CONTACT' },
   ]
@@ -46,7 +45,7 @@ const Navbar = () => {
             <motion.img
               src={logo}
               alt="Euphoric Logo"
-              className="h-12 w-auto"
+              className="h-20 w-auto"
               whileHover={{ scale: 1.05 }}
               transition={{ type: 'spring', stiffness: 300 }}
             />

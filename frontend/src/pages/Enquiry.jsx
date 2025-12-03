@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import emailjs from '@emailjs/browser'
+import { useEmailJS } from '../hooks/useEmailJS'
+import { useAlertContext } from '../context/AlertContext'
+import Loader from '../components/Loader'
 
 const Enquiry = () => {
   const [formData, setFormData] = useState({
@@ -9,8 +11,8 @@ const Enquiry = () => {
     email: '',
     message: '',
   })
-  const [submitting, setSubmitting] = useState(false)
-  const [submitSuccess, setSubmitSuccess] = useState(false)
+  const { sendEmail, loading: emailLoading } = useEmailJS()
+  const { showSuccess, showError } = useAlertContext()
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -18,36 +20,26 @@ const Enquiry = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setSubmitting(true)
 
-    try {
-      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID
-      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
-      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-
-      if (serviceId && templateId && publicKey) {
-        await emailjs.send(
-          serviceId,
-          templateId,
-          {
-            from_name: formData.name,
-            from_email: formData.email,
-            phone: formData.phone,
-            message: formData.message,
-            to_email: 'euphoricparth1003@gmail.com',
-          },
-          publicKey
-        )
+    const result = await sendEmail(
+      {
+        from_name: formData.name,
+        from_email: formData.email,
+        phone: formData.phone,
+        message: formData.message,
+        to_email: 'euphoricparth1003@gmail.com',
+      },
+      {
+        serviceId: 'service_bhliq0s',
+        templateId: 'template_i7q4f0m',
       }
+    )
 
-      setSubmitSuccess(true)
+    if (result.success) {
+      showSuccess('Thank you! Your enquiry has been sent successfully.')
       setFormData({ name: '', phone: '', email: '', message: '' })
-      setTimeout(() => setSubmitSuccess(false), 5000)
-    } catch (error) {
-      console.error('Error sending enquiry:', error)
-      alert('Failed to send enquiry. Please try again.')
-    } finally {
-      setSubmitting(false)
+    } else {
+      showError(result.error?.message || 'Failed to send enquiry. Please try again.')
     }
   }
 
@@ -143,23 +135,20 @@ const Enquiry = () => {
               {/* Submit Button */}
               <motion.button
                 type="submit"
-                disabled={submitting}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full px-8 py-4 bg-yellow-400 text-black font-bold uppercase tracking-wider hover:bg-yellow-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={emailLoading}
+                whileHover={{ scale: emailLoading ? 1 : 1.02 }}
+                whileTap={{ scale: emailLoading ? 1 : 0.98 }}
+                className="w-full px-8 py-4 bg-yellow-400 text-black font-bold uppercase tracking-wider hover:bg-yellow-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
               >
-                {submitting ? 'Sending...' : 'Send'}
+                {emailLoading ? (
+                  <>
+                    <Loader size="sm" />
+                    <span>Sending...</span>
+                  </>
+                ) : (
+                  'Send'
+                )}
               </motion.button>
-
-              {submitSuccess && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="p-4 bg-green-500/20 border border-green-500 text-green-400 text-center"
-                >
-                  Thank you! Your enquiry has been sent successfully.
-                </motion.div>
-              )}
             </form>
           </div>
         </motion.div>

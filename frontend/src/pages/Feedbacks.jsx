@@ -3,7 +3,9 @@ import { useSelector } from 'react-redux'
 import { motion } from 'framer-motion'
 import { FiStar } from 'react-icons/fi'
 import { FaStar } from 'react-icons/fa'
-import emailjs from '@emailjs/browser'
+import { useEmailJS } from '../hooks/useEmailJS'
+import { useAlertContext } from '../context/AlertContext'
+import Loader from '../components/Loader'
 
 const Feedbacks = () => {
   const { items: reviews, loading } = useSelector((state) => state.reviews)
@@ -13,8 +15,8 @@ const Feedbacks = () => {
     name: '',
     feedback: '',
   })
-  const [submitting, setSubmitting] = useState(false)
-  const [submitSuccess, setSubmitSuccess] = useState(false)
+  const { sendEmail, loading: emailLoading } = useEmailJS()
+  const { showSuccess, showError, showWarning } = useAlertContext()
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -23,54 +25,36 @@ const Feedbacks = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (rating === 0) {
-      alert('Please select a rating')
+      showWarning('Please select a rating')
       return
     }
 
     if (!formData.name.trim() || !formData.feedback.trim()) {
-      alert('Please fill in all fields')
+      showWarning('Please fill in all fields')
       return
     }
 
-    setSubmitting(true)
-
-    try {
-      // Send email via EmailJS
-      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID
-      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
-      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-
-      if (!serviceId || !templateId || !publicKey) {
-        throw new Error('EmailJS configuration is missing. Please check your .env file.')
+    const result = await sendEmail(
+      {
+        from_name: formData.name,
+        rating: rating,
+        message: formData.feedback,
+        to_email: 'euphoricparth1003@gmail.com',
+        subject: `New Feedback from ${formData.name} - Rating: ${rating}/5`,
+        feedback_date: new Date().toLocaleDateString(),
+      },
+      {
+        serviceId: 'service_bhliq0s',
+        templateId: 'template_i7q4f0m',
       }
+    )
 
-      // Send feedback email
-      await emailjs.send(
-        serviceId,
-        templateId,
-        {
-          from_name: formData.name,
-          rating: rating,
-          message: formData.feedback,
-          to_email: 'euphoricparth1003@gmail.com',
-          subject: `New Feedback from ${formData.name} - Rating: ${rating}/5`,
-          feedback_date: new Date().toLocaleDateString(),
-        },
-        publicKey
-      )
-
-      setSubmitSuccess(true)
+    if (result.success) {
+      showSuccess('Thank you for your feedback! We\'ve received it and will review it soon.')
       setFormData({ name: '', feedback: '' })
       setRating(0)
-      setTimeout(() => setSubmitSuccess(false), 5000)
-    } catch (error) {
-      console.error('Error submitting feedback:', error)
-      alert(
-        error.message ||
-          'Failed to submit feedback. Please check your EmailJS configuration and try again.'
-      )
-    } finally {
-      setSubmitting(false)
+    } else {
+      showError(result.error?.message || 'Failed to submit feedback. Please try again.')
     }
   }
 
@@ -98,7 +82,9 @@ const Feedbacks = () => {
         {/* Existing Reviews */}
         <div className="max-w-4xl mx-auto mb-16">
           {loading ? (
-            <div className="text-center text-gray-400">Loading reviews...</div>
+            <div className="text-center text-gray-400">
+              <Loader size="md" className="mx-auto" />
+            </div>
           ) : reviews.length > 0 ? (
             <div className="space-y-6">
               {reviews.map((review, index) => (
@@ -219,23 +205,20 @@ const Feedbacks = () => {
               {/* Submit Button */}
               <motion.button
                 type="submit"
-                disabled={submitting || rating === 0}
-                whileHover={{ scale: submitting ? 1 : 1.02 }}
-                whileTap={{ scale: submitting ? 1 : 0.98 }}
-                className="w-full px-8 py-4 bg-yellow-400 text-black font-bold uppercase tracking-wider hover:bg-yellow-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-yellow-400"
+                disabled={emailLoading || rating === 0}
+                whileHover={{ scale: emailLoading ? 1 : 1.02 }}
+                whileTap={{ scale: emailLoading ? 1 : 0.98 }}
+                className="w-full px-8 py-4 bg-yellow-400 text-black font-bold uppercase tracking-wider hover:bg-yellow-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-yellow-400 flex items-center justify-center gap-3"
               >
-                {submitting ? 'Submitting...' : 'Give Feedback'}
+                {emailLoading ? (
+                  <>
+                    <Loader size="sm" />
+                    <span>Submitting...</span>
+                  </>
+                ) : (
+                  'Give Feedback'
+                )}
               </motion.button>
-
-              {submitSuccess && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="p-4 bg-green-500/20 border border-green-500 text-green-400 text-center rounded"
-                >
-                  ✓ Thank you for your feedback! We've received it and will review it soon.
-                </motion.div>
-              )}
             </form>
           </div>
         </motion.div>

@@ -32,7 +32,7 @@ const Contact = () => {
     const vcard = `BEGIN:VCARD
 VERSION:3.0
 FN:Euphoric Live
-ORG:Euphoric Live Event Management
+ORG:Euphoric Live
 TEL;TYPE=CELL:+919727579905
 EMAIL:euphoricparth1003@gmail.com
 URL:https://euphoriclive.com

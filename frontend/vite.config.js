@@ -29,5 +29,11 @@ export default defineConfig({
     "**/*.GIF",
     "**/*.webp",
     "**/*.WEBP",
+    "**/*.mp4",
+    "**/*.MP4",
+    "**/*.webm",
+    "**/*.WEBM",
+    "**/*.mov",
+    "**/*.MOV",
   ],
 });

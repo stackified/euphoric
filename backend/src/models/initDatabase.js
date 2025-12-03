@@ -2,6 +2,11 @@ import pool from '../config/database.js'
 
 const initDatabase = async () => {
   try {
+    // Test connection first
+    const connection = await pool.getConnection()
+    await connection.ping()
+    connection.release()
+
     // Create reviews table
     await pool.execute(`
       CREATE TABLE IF NOT EXISTS reviews (
@@ -42,6 +47,26 @@ const initDatabase = async () => {
     console.log('✅ Database tables initialized successfully')
   } catch (error) {
     console.error('❌ Error initializing database:', error.message)
+    
+    // Provide specific help for authentication errors
+    if (error.message.includes('auth_gssapi_client') || error.message.includes('authentication')) {
+      console.error('\n🔧 FIX REQUIRED: MySQL Authentication Plugin Issue')
+      console.error('   Your MySQL user is using an unsupported authentication method.')
+      console.error('\n   Run these commands in MySQL to fix:')
+      console.error('   ----------------------------------------')
+      const user = process.env.DB_USER || 'root'
+      const host = process.env.DB_HOST || 'localhost'
+      console.error(`   ALTER USER '${user}'@'${host}' IDENTIFIED WITH mysql_native_password BY '${process.env.DB_PASSWORD || ''}';`)
+      console.error('   FLUSH PRIVILEGES;')
+      console.error('   ----------------------------------------')
+      console.error('\n   Or if connecting from any host:')
+      console.error(`   ALTER USER '${user}'@'%' IDENTIFIED WITH mysql_native_password BY '${process.env.DB_PASSWORD || ''}';`)
+      console.error('   FLUSH PRIVILEGES;')
+      console.error('\n   After running these commands, restart the backend server.')
+    }
+    
+    // Re-throw to prevent server from starting without database
+    throw error
   }
 }
 

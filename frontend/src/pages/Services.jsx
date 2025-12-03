@@ -102,7 +102,7 @@ const Services = () => {
           <h1 className="text-5xl md:text-7xl font-display font-bold text-yellow-400 mb-4">
             SERVICES
           </h1>
-          <p className="text-gray-400 text-lg">Comprehensive event management solutions</p>
+          <p className="text-gray-400 text-lg">Comprehensive musician services and solutions</p>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">

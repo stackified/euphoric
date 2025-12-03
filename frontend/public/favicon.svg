@@ -1,6 +1,51 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <rect width="100" height="100" fill="#000000"/>
-  <text x="50" y="60" font-family="Arial Black, sans-serif" font-size="50" font-weight="900" fill="#FFFF00" text-anchor="middle" letter-spacing="2">E</text>
-  <text x="50" y="85" font-family="Arial Black, sans-serif" font-size="25" font-weight="900" fill="#FFFF00" text-anchor="middle">L</text>
+  <defs>
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FCD34D;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FBBF24;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F59E0B;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="bgGradient" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#1F2937;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:1" />
+    </radialGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background with rounded corners -->
+  <rect width="100" height="100" rx="22" fill="url(#bgGradient)"/>
+  
+  <!-- Bold stylized "E" - designed for maximum visibility at small sizes -->
+  <g filter="url(#glow)">
+    <!-- Main E shape -->
+    <path d="M 26 20 L 26 80 L 74 80 L 74 66 L 40 66 L 40 56 L 70 56 L 70 44 L 40 44 L 40 34 L 74 34 L 74 20 Z" 
+          fill="url(#goldGradient)"/>
+    
+    <!-- Inner highlight for depth -->
+    <path d="M 30 24 L 30 76 L 70 76 L 70 64 L 36 64 L 36 56 L 66 56 L 66 44 L 36 44 L 36 36 L 70 36 L 70 24 Z" 
+          fill="#FCD34D" 
+          opacity="0.4"/>
+  </g>
+  
+  <!-- Decorative elements - sound waves -->
+  <g opacity="0.8">
+    <circle cx="78" cy="28" r="4" fill="url(#goldGradient)"/>
+    <path d="M 78 32 Q 78 36 82 36" 
+          stroke="url(#goldGradient)" 
+          stroke-width="2" 
+          fill="none" 
+          stroke-linecap="round"/>
+    <path d="M 78 40 Q 78 44 82 44" 
+          stroke="url(#goldGradient)" 
+          stroke-width="1.5" 
+          fill="none" 
+          stroke-linecap="round" 
+          opacity="0.7"/>
+  </g>
 </svg>
-

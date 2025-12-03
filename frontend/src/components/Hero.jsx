@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { FaPhone, FaWhatsapp, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa'
-import heroImage from '../assets/IMG_4857.jpg'
+import { FaPhone, FaWhatsapp, FaEnvelope } from 'react-icons/fa'
+import heroImg from '../assets/hero_img.jpg'
 
 const Hero = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
@@ -27,11 +27,6 @@ const Hero = () => {
       icon: FaWhatsapp,
       label: 'WhatsApp',
       href: 'https://wa.me/919727579905',
-    },
-    {
-      icon: FaMapMarkerAlt,
-      label: 'Direction',
-      href: 'https://maps.google.com/?q=Euphoric+Live',
     },
     {
       icon: FaEnvelope,
@@ -61,7 +56,7 @@ const Hero = () => {
       {/* Hero Background Image */}
       <div className="absolute inset-0 z-0">
         <motion.img
-          src={heroImage}
+          src={heroImg}
           alt="Euphoric Live Performance"
           className="w-full h-full object-cover brightness-125"
           initial={{ scale: 1.1 }}
@@ -110,7 +105,7 @@ const Hero = () => {
           style={{
             fontFamily: "'Bebas Neue', Impact, 'Arial Black', sans-serif",
             letterSpacing: '0.08em',
-            textShadow: '0 0 40px rgba(255, 255, 0, 0.5), 0 0 80px rgba(255, 255, 0, 0.3)',
+            textShadow: '0 0 20px rgba(255, 255, 0, 0.3), 0 0 40px rgba(255, 255, 0, 0.2)',
           }}
         >
           EUPHORIC

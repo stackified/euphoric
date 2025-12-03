@@ -24,7 +24,7 @@ const ServicesPreview = () => {
             OUR SERVICES
           </h2>
           <p className="text-gray-400 text-lg">
-            Professional event management for every occasion
+            Professional musician services for every occasion
           </p>
         </motion.div>
 

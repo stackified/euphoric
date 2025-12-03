@@ -32,9 +32,9 @@ const About = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-lg"
             >
-              EUPHORIC LIVE is a premier event management company specializing in creating
-              unforgettable experiences for a wide range of events. With a passion for excellence
-              and attention to detail, we bring your vision to life.
+              EUPHORIC LIVE is a premier musician specializing in creating
+              unforgettable experiences through powerful live performances. With a passion for excellence
+              and attention to detail, we bring musical visions to life.
             </motion.p>
 
             <motion.p
@@ -82,8 +82,8 @@ const About = () => {
             >
               <h2 className="text-2xl font-semibold text-yellow-400 mb-4">Our Vision</h2>
               <p className="text-gray-300">
-                To be the leading event management company recognized for innovation, excellence,
-                and unparalleled service in the industry.
+              To be the leading musician recognized for innovation, excellence,
+              and unparalleled service in the music industry.
               </p>
             </motion.div>
           </div>

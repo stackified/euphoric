@@ -1,11 +1,24 @@
 import pool from '../config/database.js'
+import { getCache, setCache, deleteCache, invalidateCachePattern } from '../utils/cache.js'
 
 // Get all events
 export const getEvents = async (req, res) => {
   try {
+    // Try to get from cache
+    const cacheKey = 'events:upcoming'
+    const cached = await getCache(cacheKey)
+    if (cached) {
+      return res.json(cached)
+    }
+
+    // Fetch from database using prepared statement
     const [events] = await pool.execute(
       'SELECT * FROM events WHERE date >= CURDATE() ORDER BY date ASC'
     )
+
+    // Cache for 30 minutes
+    await setCache(cacheKey, events, 1800)
+
     res.json(events)
   } catch (error) {
     console.error('Error fetching events:', error)
@@ -33,21 +46,26 @@ export const getEvent = async (req, res) => {
 // Create a new event
 export const createEvent = async (req, res) => {
   try {
+    // Validation handled by middleware
     const { title, date, location, image, description } = req.body
 
-    // Validation
-    if (!title || !date || !location) {
-      return res.status(400).json({ error: 'Title, date, and location are required' })
-    }
+    // Sanitize inputs
+    const sanitizedTitle = title.trim().substring(0, 200)
+    const sanitizedLocation = location.trim().substring(0, 200)
+    const sanitizedDescription = description ? description.trim().substring(0, 2000) : null
 
+    // Use prepared statements
     const [result] = await pool.execute(
       'INSERT INTO events (title, date, location, image, description) VALUES (?, ?, ?, ?, ?)',
-      [title, date, location, image || null, description || null]
+      [sanitizedTitle, date, sanitizedLocation, image || null, sanitizedDescription]
     )
 
     const [newEvent] = await pool.execute('SELECT * FROM events WHERE id = ?', [
       result.insertId,
     ])
+
+    // Invalidate cache
+    await invalidateCachePattern('events:*')
 
     res.status(201).json(newEvent[0])
   } catch (error) {
@@ -62,16 +80,26 @@ export const updateEvent = async (req, res) => {
     const { id } = req.params
     const { title, date, location, image, description } = req.body
 
+    // Sanitize inputs
+    const sanitizedTitle = title ? title.trim().substring(0, 200) : null
+    const sanitizedLocation = location ? location.trim().substring(0, 200) : null
+    const sanitizedDescription = description ? description.trim().substring(0, 2000) : null
+
+    // Use prepared statements with parameterized query
     const [result] = await pool.execute(
       'UPDATE events SET title = ?, date = ?, location = ?, image = ?, description = ? WHERE id = ?',
-      [title, date, location, image || null, description || null, id]
+      [sanitizedTitle, date, sanitizedLocation, image || null, sanitizedDescription, parseInt(id, 10)]
     )
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: 'Event not found' })
     }
 
-    const [updatedEvent] = await pool.execute('SELECT * FROM events WHERE id = ?', [id])
+    const [updatedEvent] = await pool.execute('SELECT * FROM events WHERE id = ?', [parseInt(id, 10)])
+    
+    // Invalidate cache
+    await invalidateCachePattern('events:*')
+
     res.json(updatedEvent[0])
   } catch (error) {
     console.error('Error updating event:', error)
@@ -83,11 +111,16 @@ export const updateEvent = async (req, res) => {
 export const deleteEvent = async (req, res) => {
   try {
     const { id } = req.params
-    const [result] = await pool.execute('DELETE FROM events WHERE id = ?', [id])
+    
+    // Use prepared statement with parameterized query
+    const [result] = await pool.execute('DELETE FROM events WHERE id = ?', [parseInt(id, 10)])
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: 'Event not found' })
     }
+
+    // Invalidate cache
+    await invalidateCachePattern('events:*')
 
     res.json({ message: 'Event deleted successfully' })
   } catch (error) {
