@@ -4,15 +4,44 @@
     <meta charset="utf-8" />
     <title>Redirecting...</title>
     <script>
-      // Get the current path and redirect to index.html with the path as a hash
-      const path = window.location.pathname + window.location.search;
-      window.location.href = "/euphoric/index.html" + path;
+      // Fix for GitHub Pages SPA routing - prevent infinite redirect loops
+      (function() {
+        var l = window.location;
+        var pathname = l.pathname;
+        
+        // If we're already on index.html, don't redirect (let React Router handle it)
+        if (pathname === '/euphoric/index.html' || pathname === '/euphoric/') {
+          return;
+        }
+        
+        // If path contains index.html multiple times, we're in a loop - stop
+        var indexHtmlCount = (pathname.match(/index\.html/g) || []).length;
+        if (indexHtmlCount > 1) {
+          // Force redirect to base path
+          l.replace('/euphoric/');
+          return;
+        }
+        
+        // Extract the route (everything after /euphoric/)
+        var route = pathname.replace(/^\/euphoric\/?/, '').replace(/^index\.html\/?/, '');
+        
+        // Remove any duplicate euphoric/index.html patterns
+        route = route.replace(/euphoric\/index\.html\/?/g, '');
+        
+        // Clean up the route
+        route = route.replace(/\/+/g, '/').replace(/^\//, '');
+        
+        // Redirect to base path - React Router will handle the route
+        var redirectUrl = '/euphoric/' + (route ? route : '') + l.search + l.hash;
+        
+        // Only redirect if we're not already there
+        if (pathname !== redirectUrl && !pathname.includes('/index.html')) {
+          l.replace(redirectUrl);
+        }
+      })();
     </script>
-    <meta http-equiv="refresh" content="0; URL='/euphoric/index.html'" />
   </head>
   <body>
-    <p>
-      If you are not redirected, <a href="/euphoric/index.html">click here</a>.
-    </p>
+    <p>Redirecting...</p>
   </body>
 </html>
