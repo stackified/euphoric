@@ -1,54 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <title>Redirecting...</title>
-    <script>
-      // Fix for GitHub Pages SPA routing - prevent infinite redirect loops
-      (function () {
-        var l = window.location;
-        var pathname = l.pathname;
-        var redirectKey = "euphoric_redirect_done";
-
-        // Check if we've already redirected (prevent loops)
-        if (sessionStorage.getItem(redirectKey)) {
-          sessionStorage.removeItem(redirectKey);
-          return; // Already redirected, let React Router handle it
-        }
-
-        // If we're already on index.html or base path, don't redirect
-        if (
-          pathname === "/euphoric/index.html" ||
-          pathname === "/euphoric/" ||
-          pathname === "/euphoric"
-        ) {
-          return;
-        }
-
-        // If path contains index.html multiple times, we're in a loop - stop
-        var indexHtmlCount = (pathname.match(/index\.html/g) || []).length;
-        if (indexHtmlCount > 1) {
-          sessionStorage.setItem(redirectKey, "true");
-          l.replace("/euphoric/");
-          return;
-        }
-
-        // Extract the route (everything after /euphoric/)
-        var route = pathname
-          .replace(/^\/euphoric\/?/, "")
-          .replace(/^index\.html\/?/, "");
-        route = route.replace(/euphoric\/index\.html\/?/g, "");
-        route = route.replace(/\/+/g, "/").replace(/^\//, "");
-
-        // Set flag and redirect to base path
-        // React Router with basename="/euphoric" will handle the route from the original URL
-        sessionStorage.setItem(redirectKey, "true");
-        var targetPath = "/euphoric" + (route ? "/" + route : "");
-        l.replace(targetPath + l.search + l.hash);
-      })();
-    </script>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/euphoric/favicon.svg" />
+    <link rel="icon" type="image/png" href="/euphoric/favicon.png" />
+    <link rel="apple-touch-icon" href="/euphoric/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EUPHORIC LIVE - Professional Musician</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <p>Redirecting...</p>
+    <div id="root"></div>
+    <script type="module" src="/euphoric/src/main.jsx"></script>
   </body>
 </html>
