@@ -25,6 +25,9 @@ jobs:
         with:
           lfs: true
 
+      - name: Pull Git LFS files
+        run: git lfs pull
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
