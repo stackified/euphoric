@@ -8,16 +8,27 @@
       (function () {
         var l = window.location;
         var pathname = l.pathname;
+        var redirectKey = "euphoric_redirect_done";
 
-        // If we're already on index.html, don't redirect (let React Router handle it)
-        if (pathname === "/euphoric/index.html" || pathname === "/euphoric/") {
+        // Check if we've already redirected (prevent loops)
+        if (sessionStorage.getItem(redirectKey)) {
+          sessionStorage.removeItem(redirectKey);
+          return; // Already redirected, let React Router handle it
+        }
+
+        // If we're already on index.html or base path, don't redirect
+        if (
+          pathname === "/euphoric/index.html" ||
+          pathname === "/euphoric/" ||
+          pathname === "/euphoric"
+        ) {
           return;
         }
 
         // If path contains index.html multiple times, we're in a loop - stop
         var indexHtmlCount = (pathname.match(/index\.html/g) || []).length;
         if (indexHtmlCount > 1) {
-          // Force redirect to base path
+          sessionStorage.setItem(redirectKey, "true");
           l.replace("/euphoric/");
           return;
         }
@@ -26,21 +37,14 @@
         var route = pathname
           .replace(/^\/euphoric\/?/, "")
           .replace(/^index\.html\/?/, "");
-
-        // Remove any duplicate euphoric/index.html patterns
         route = route.replace(/euphoric\/index\.html\/?/g, "");
-
-        // Clean up the route
         route = route.replace(/\/+/g, "/").replace(/^\//, "");
 
-        // Redirect to index.html - React Router with basename will handle the route
-        // The route is preserved in the URL path, React Router will match it
-        var redirectUrl = "/euphoric/index.html" + (route ? "/" + route : "") + l.search + l.hash;
-
-        // Only redirect if we're not already there and not in a loop
-        if (pathname !== redirectUrl && !pathname.includes("/index.html")) {
-          l.replace(redirectUrl);
-        }
+        // Set flag and redirect to base path
+        // React Router with basename="/euphoric" will handle the route from the original URL
+        sessionStorage.setItem(redirectKey, "true");
+        var targetPath = "/euphoric" + (route ? "/" + route : "");
+        l.replace(targetPath + l.search + l.hash);
       })();
     </script>
   </head>
