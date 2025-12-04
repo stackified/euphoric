@@ -5,37 +5,40 @@
     <title>Redirecting...</title>
     <script>
       // Fix for GitHub Pages SPA routing - prevent infinite redirect loops
-      (function() {
+      (function () {
         var l = window.location;
         var pathname = l.pathname;
-        
+
         // If we're already on index.html, don't redirect (let React Router handle it)
-        if (pathname === '/euphoric/index.html' || pathname === '/euphoric/') {
+        if (pathname === "/euphoric/index.html" || pathname === "/euphoric/") {
           return;
         }
-        
+
         // If path contains index.html multiple times, we're in a loop - stop
         var indexHtmlCount = (pathname.match(/index\.html/g) || []).length;
         if (indexHtmlCount > 1) {
           // Force redirect to base path
-          l.replace('/euphoric/');
+          l.replace("/euphoric/");
           return;
         }
-        
+
         // Extract the route (everything after /euphoric/)
-        var route = pathname.replace(/^\/euphoric\/?/, '').replace(/^index\.html\/?/, '');
-        
+        var route = pathname
+          .replace(/^\/euphoric\/?/, "")
+          .replace(/^index\.html\/?/, "");
+
         // Remove any duplicate euphoric/index.html patterns
-        route = route.replace(/euphoric\/index\.html\/?/g, '');
-        
+        route = route.replace(/euphoric\/index\.html\/?/g, "");
+
         // Clean up the route
-        route = route.replace(/\/+/g, '/').replace(/^\//, '');
-        
-        // Redirect to base path - React Router will handle the route
-        var redirectUrl = '/euphoric/' + (route ? route : '') + l.search + l.hash;
-        
-        // Only redirect if we're not already there
-        if (pathname !== redirectUrl && !pathname.includes('/index.html')) {
+        route = route.replace(/\/+/g, "/").replace(/^\//, "");
+
+        // Redirect to index.html - React Router with basename will handle the route
+        // The route is preserved in the URL path, React Router will match it
+        var redirectUrl = "/euphoric/index.html" + (route ? "/" + route : "") + l.search + l.hash;
+
+        // Only redirect if we're not already there and not in a loop
+        if (pathname !== redirectUrl && !pathname.includes("/index.html")) {
           l.replace(redirectUrl);
         }
       })();
