@@ -23,10 +23,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          lfs: true
-
-      - name: Pull Git LFS files
-        run: git lfs pull
+          lfs: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
