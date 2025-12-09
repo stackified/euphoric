@@ -1,70 +1,118 @@
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { FaPhone, FaWhatsapp, FaEnvelope } from 'react-icons/fa'
-import heroImg from '../assets/hero_img.jpg'
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { FaPhone, FaWhatsapp, FaEnvelope } from "react-icons/fa";
+import heroImg from "../assets/hero_img.jpg";
+// import heroImg2 from "../assets/hero_img_2.jpg";
+import heroImg2 from "../assets/hero_img_2.png";
+// import heroImg3 from "../assets/hero_img_3.png";
 
 const Hero = () => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     const handleMouseMove = (e) => {
       setMousePosition({
         x: (e.clientX / window.innerWidth - 0.5) * 20,
         y: (e.clientY / window.innerHeight - 0.5) * 20,
-      })
-    }
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
-  }, [])
+      });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
 
   const contactButtons = [
     {
       icon: FaPhone,
-      label: 'Call Me',
-      href: 'tel:+919727579905',
+      label: "Call Us",
+      href: "tel:+919727579905",
     },
     {
       icon: FaWhatsapp,
-      label: 'WhatsApp',
-      href: 'https://wa.me/919727579905',
+      label: "WhatsApp",
+      href: "https://wa.me/919727579905",
     },
     {
       icon: FaEnvelope,
-      label: 'Mail',
-      href: 'mailto:euphoricparth1003@gmail.com',
+      label: "Mail",
+      href: "mailto:euphoricparth1003@gmail.com",
     },
-  ]
+  ];
 
   const contactInfo = [
-    { icon: FaPhone, label: 'Call', href: 'tel:+919727579905', value: '+91 9727579905' },
+    {
+      icon: FaPhone,
+      label: "Call",
+      href: "tel:+919727579905",
+      value: "+91 9727579905",
+    },
     {
       icon: FaWhatsapp,
-      label: 'WhatsApp',
-      href: 'https://wa.me/919727579905',
-      value: '+91 9727579905',
+      label: "WhatsApp",
+      href: "https://wa.me/919727579905",
+      value: "+91 9727579905",
     },
     {
       icon: FaEnvelope,
-      label: 'Mail',
-      href: 'mailto:euphoricparth1003@gmail.com',
-      value: 'euphoricparth1003@gmail.com',
+      label: "Mail",
+      href: "mailto:euphoricparth1003@gmail.com",
+      value: "euphoricparth1003@gmail.com",
     },
-  ]
+  ];
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
-      {/* Hero Background Image */}
+      {/* Hero Background Images with Fade Animation */}
       <div className="absolute inset-0 z-0">
+        {/* First Hero Image */}
         <motion.img
           src={heroImg}
           alt="Euphoric Live Performance"
-          className="w-full h-full object-cover brightness-125"
-          initial={{ scale: 1.1 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 1.5, ease: 'easeOut' }}
+          className="absolute inset-0 w-full h-full object-cover brightness-125"
+          initial={{ scale: 1.1, opacity: 1 }}
+          animate={{
+            scale: 1,
+            opacity: [1, 0, 0, 1],
+          }}
+          transition={{
+            scale: { duration: 1.5, ease: "easeOut" },
+            opacity: {
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+              times: [0, 0.5, 0.5, 1],
+            },
+          }}
           style={{
-            transform: `translate(${mousePosition.x * 0.02}px, ${mousePosition.y * 0.02}px)`,
-            filter: 'brightness(1.3) contrast(1.1)',
+            transform: `translate(${mousePosition.x * 0.02}px, ${
+              mousePosition.y * 0.02
+            }px)`,
+            filter: "brightness(1.3) contrast(1.1)",
+          }}
+        />
+        {/* Second Hero Image */}
+        <motion.img
+          src={heroImg2}
+          alt="Euphoric Live Performance"
+          className="absolute inset-0 w-full h-full object-cover brightness-125"
+          initial={{ scale: 1.1, opacity: 0 }}
+          animate={{
+            scale: 1,
+            opacity: [0, 1, 1, 0],
+          }}
+          transition={{
+            scale: { duration: 1.5, ease: "easeOut" },
+            opacity: {
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+              times: [0, 0.5, 0.5, 1],
+            },
+          }}
+          style={{
+            transform: `translate(${mousePosition.x * 0.02}px, ${
+              mousePosition.y * 0.02
+            }px)`,
+            filter: "brightness(1.3) contrast(1.1)",
           }}
         />
         {/* Lighter Overlay with Gradient - Increased brightness */}
@@ -82,14 +130,14 @@ const Hero = () => {
               left: `${20 + i * 20}%`,
             }}
             animate={{
-              y: ['-100%', '100%'],
+              y: ["-100%", "100%"],
               opacity: [0, 0.2, 0],
             }}
             transition={{
               duration: 4 + i * 0.5,
               repeat: Infinity,
               delay: i * 0.4,
-              ease: 'linear',
+              ease: "linear",
             }}
           />
         ))}
@@ -100,12 +148,13 @@ const Hero = () => {
         <motion.h1
           initial={{ opacity: 0, y: 50, scale: 0.9 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 1, delay: 0.3, ease: 'easeOut' }}
+          transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
           className="text-7xl md:text-8xl lg:text-9xl font-display font-bold text-yellow-400 mb-4 text-glow leading-tight"
           style={{
             fontFamily: "'Bebas Neue', Impact, 'Arial Black', sans-serif",
-            letterSpacing: '0.08em',
-            textShadow: '0 0 20px rgba(255, 255, 0, 0.3), 0 0 40px rgba(255, 255, 0, 0.2)',
+            letterSpacing: "0.08em",
+            textShadow:
+              "0 0 20px rgba(255, 255, 0, 0.3), 0 0 40px rgba(255, 255, 0, 0.2)",
           }}
         >
           EUPHORIC
@@ -114,12 +163,12 @@ const Hero = () => {
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6, ease: 'easeOut' }}
+          transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
           className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-yellow-400 mb-12 text-glow"
           style={{
             fontFamily: "'Bebas Neue', Impact, 'Arial Black', sans-serif",
-            letterSpacing: '0.08em',
-            textShadow: '0 0 30px rgba(255, 255, 0, 0.4)',
+            letterSpacing: "0.08em",
+            textShadow: "0 0 30px rgba(255, 255, 0, 0.4)",
           }}
         >
           LIVE
@@ -136,11 +185,19 @@ const Hero = () => {
             <motion.a
               key={index}
               href={button.href}
-              target={button.href.startsWith('http') ? '_blank' : undefined}
-              rel={button.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+              target={button.href.startsWith("http") ? "_blank" : undefined}
+              rel={
+                button.href.startsWith("http")
+                  ? "noopener noreferrer"
+                  : undefined
+              }
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 1.1 + index * 0.1, type: 'spring', stiffness: 200 }}
+              transition={{
+                delay: 1.1 + index * 0.1,
+                type: "spring",
+                stiffness: 200,
+              }}
               whileHover={{ scale: 1.08, y: -5 }}
               whileTap={{ scale: 0.95 }}
               className="group relative px-6 py-4 bg-black/80 backdrop-blur-sm border-2 border-yellow-400/40 hover:border-yellow-400 text-yellow-400 font-semibold uppercase tracking-wider flex items-center gap-3 shadow-lg shadow-yellow-400/20 hover:shadow-yellow-400/40 transition-all duration-300 min-w-[160px] justify-center overflow-hidden"
@@ -160,7 +217,7 @@ const Hero = () => {
               <motion.div
                 className="absolute bottom-0 left-0 h-0.5 bg-yellow-400"
                 initial={{ width: 0 }}
-                whileHover={{ width: '100%' }}
+                whileHover={{ width: "100%" }}
                 transition={{ duration: 0.3 }}
               />
             </motion.a>
@@ -179,8 +236,12 @@ const Hero = () => {
               <motion.a
                 key={index}
                 href={contact.href}
-                target={contact.href.startsWith('http') ? '_blank' : undefined}
-                rel={contact.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                target={contact.href.startsWith("http") ? "_blank" : undefined}
+                rel={
+                  contact.href.startsWith("http")
+                    ? "noopener noreferrer"
+                    : undefined
+                }
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 1.4 + index * 0.1 }}
@@ -219,7 +280,7 @@ const Hero = () => {
         </motion.div>
       </motion.div>
     </section>
-  )
-}
+  );
+};
 
-export default Hero
+export default Hero;

@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
 
 // Components
@@ -5,6 +6,7 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import CookieBanner from './components/CookieBanner'
 import Alert from './components/Alert'
+import PageLoader from './components/PageLoader'
 import { AlertProvider, useAlertContext } from './context/AlertContext'
 
 // Pages
@@ -21,9 +23,36 @@ import Enquiry from './pages/Enquiry'
 
 const AppContent = () => {
   const { alert, hideAlert } = useAlertContext()
+  const [isPageLoading, setIsPageLoading] = useState(true)
+
+  useEffect(() => {
+    // Simulate page loading - show loader for a minimum duration
+    const timer = setTimeout(() => {
+      setIsPageLoading(false)
+    }, 1500) // Show loader for at least 1.5 seconds
+
+    // Also hide loader when page is fully loaded
+    const handleLoad = () => {
+      setTimeout(() => {
+        setIsPageLoading(false)
+      }, 500)
+    }
+
+    if (document.readyState === 'complete') {
+      handleLoad()
+    } else {
+      window.addEventListener('load', handleLoad)
+    }
+
+    return () => {
+      clearTimeout(timer)
+      window.removeEventListener('load', handleLoad)
+    }
+  }, [])
 
   return (
     <div className="min-h-screen bg-black">
+      <PageLoader isLoading={isPageLoading} />
       <Navbar />
       <main>
         <Routes>
@@ -35,7 +64,7 @@ const AppContent = () => {
           <Route path="/events" element={<Events />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/links" element={<Links />} />
-          <Route path="/feedbacks" element={<Feedbacks />} />
+          {/* <Route path="/feedbacks" element={<Feedbacks />} /> */}
           <Route path="/enquiry" element={<Enquiry />} />
         </Routes>
       </main>
