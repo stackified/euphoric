@@ -5,7 +5,7 @@ import ServicesPreview from "../components/ServicesPreview";
 import QuickActionBox from "../components/QuickActionBox";
 import EventsPreview from "../components/EventsPreview";
 import GalleryPreview from "../components/GalleryPreview";
-import FeaturedVideos from "../components/FeaturedVideos";
+// import FeaturedVideos from "../components/FeaturedVideos";
 import AboutEuphoric from "../components/AboutEuphoric";
 
 const Home = () => {
@@ -30,7 +30,7 @@ const Home = () => {
       <EventsPreview />
       <GalleryPreview />
       <AboutEuphoric />
-      <FeaturedVideos />
+      {/* <FeaturedVideos /> */}
     </motion.div>
   );
 };

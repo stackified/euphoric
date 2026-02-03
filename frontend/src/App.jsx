@@ -14,7 +14,7 @@ import Home from './pages/Home'
 import About from './pages/About'
 import Services from './pages/Services'
 import Gallery from './pages/Gallery'
-import Videos from './pages/Videos'
+// import Videos from './pages/Videos'
 import Events from './pages/Events'
 import Contact from './pages/Contact'
 import Links from './pages/Links'
@@ -60,7 +60,7 @@ const AppContent = () => {
           <Route path="/about" element={<About />} />
           <Route path="/services" element={<Services />} />
           <Route path="/gallery" element={<Gallery />} />
-          <Route path="/videos" element={<Videos />} />
+          {/* <Route path="/videos" element={<Videos />} /> */}
           <Route path="/events" element={<Events />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/links" element={<Links />} />
