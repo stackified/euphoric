@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { useEffect } from 'react'
-import { FaPhone, FaWhatsapp, FaEnvelope, FaMapMarkerAlt, FaDownload } from 'react-icons/fa'
+import { FaPhone, FaWhatsapp, FaEnvelope, FaMapMarkerAlt, FaDownload, FaInstagram } from 'react-icons/fa'
 
 const Contact = () => {
   useEffect(() => {
@@ -25,6 +25,12 @@ const Contact = () => {
       label: 'Email',
       value: 'euphoricparth1003@gmail.com',
       href: 'mailto:euphoricparth1003@gmail.com',
+    },
+    {
+      icon: FaInstagram,
+      label: 'Instagram',
+      value: '@musicbypaarth',
+      href: 'https://www.instagram.com/musicbypaarth/',
     },
   ]
 
@@ -70,8 +76,8 @@ END:VCARD`
           <p className="text-gray-400 text-lg">Get in touch with us</p>
         </motion.div>
 
-        <div className="max-w-4xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             {contactInfo.map((contact, index) => (
               <motion.a
                 key={index}
@@ -86,7 +92,7 @@ END:VCARD`
               >
                 <contact.icon className="text-yellow-400 text-3xl mb-4 mx-auto group-hover:scale-110 transition-transform" />
                 <h3 className="text-white font-semibold mb-2">{contact.label}</h3>
-                <p className="text-gray-400 text-sm">{contact.value}</p>
+                <p className="text-gray-400 text-xs md:text-sm break-words">{contact.value}</p>
               </motion.a>
             ))}
           </div>
@@ -120,6 +126,17 @@ END:VCARD`
               >
                 <FaWhatsapp />
                 WhatsApp Quick Message
+              </motion.a>
+              <motion.a
+                href="https://www.instagram.com/musicbypaarth/"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center justify-center gap-3 px-6 py-3 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 text-white font-semibold hover:opacity-90 transition-opacity"
+              >
+                <FaInstagram />
+                Instagram Message
               </motion.a>
             </div>
           </motion.div>

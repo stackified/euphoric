@@ -683,7 +683,7 @@ A professional video player with:
 - **Phone**: +91 9727579905
 - **WhatsApp**: +91 9727579905
 - **Email**: euphoricparth1003@gmail.com
-- **Instagram**: [@_euphoric_live_](https://www.instagram.com/_euphoric_live_)
+- **Instagram**: [@_euphoric_live_](https://www.instagram.com/_euphoric_live_) | [@musicbypaarth](https://www.instagram.com/musicbypaarth/)
 
 ## 🐛 Troubleshooting
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { FaPhone, FaWhatsapp, FaEnvelope } from "react-icons/fa";
+import { FaPhone, FaWhatsapp, FaEnvelope, FaInstagram } from "react-icons/fa";
 import heroImg from "../assets/hero_img.jpg";
 // import heroImg2 from "../assets/hero_img_2.jpg";
 import heroImg2 from "../assets/hero_img_2.png";
@@ -36,6 +36,11 @@ const Hero = () => {
       label: "Mail",
       href: "mailto:euphoricparth1003@gmail.com",
     },
+    {
+      icon: FaInstagram,
+      label: "Instagram",
+      href: "https://www.instagram.com/musicbypaarth/",
+    },
   ];
 
   const contactInfo = [
@@ -56,6 +61,12 @@ const Hero = () => {
       label: "Mail",
       href: "mailto:euphoricparth1003@gmail.com",
       value: "euphoricparth1003@gmail.com",
+    },
+    {
+      icon: FaInstagram,
+      label: "Instagram",
+      href: "https://www.instagram.com/musicbypaarth/",
+      value: "@musicbypaarth",
     },
   ];
 
@@ -83,9 +94,8 @@ const Hero = () => {
             },
           }}
           style={{
-            transform: `translate(${mousePosition.x * 0.02}px, ${
-              mousePosition.y * 0.02
-            }px)`,
+            transform: `translate(${mousePosition.x * 0.02}px, ${mousePosition.y * 0.02
+              }px)`,
             filter: "brightness(1.3) contrast(1.1)",
           }}
         />
@@ -109,9 +119,8 @@ const Hero = () => {
             },
           }}
           style={{
-            transform: `translate(${mousePosition.x * 0.02}px, ${
-              mousePosition.y * 0.02
-            }px)`,
+            transform: `translate(${mousePosition.x * 0.02}px, ${mousePosition.y * 0.02
+              }px)`,
             filter: "brightness(1.3) contrast(1.1)",
           }}
         />

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { FaDownload, FaWhatsapp } from 'react-icons/fa'
+import { FaDownload, FaWhatsapp, FaInstagram } from 'react-icons/fa'
 
 /**
  * Quick Action Box Component
@@ -58,6 +58,17 @@ END:VCARD`
         >
           <FaWhatsapp />
           WhatsApp Quick Message
+        </motion.a>
+        <motion.a
+          href="https://www.instagram.com/musicbypaarth/"
+          target="_blank"
+          rel="noopener noreferrer"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="flex items-center justify-center gap-3 px-6 py-3 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 text-white font-semibold hover:opacity-90 transition-opacity"
+        >
+          <FaInstagram />
+          Instagram Message
         </motion.a>
       </div>
     </motion.div>

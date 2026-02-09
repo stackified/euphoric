@@ -17,6 +17,13 @@ const Links = () => {
       color: 'from-purple-500 to-pink-500',
     },
     {
+      icon: FaInstagram,
+      title: "Paarth's Instagram",
+      subtitle: 'Music and Vibes',
+      href: 'https://www.instagram.com/musicbypaarth/',
+      color: 'from-pink-500 to-rose-500',
+    },
+    {
       icon: SiGoogledrive,
       title: 'Video Drafts',
       subtitle: 'Watch our video drafts',
