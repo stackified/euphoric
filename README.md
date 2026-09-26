@@ -2,6 +2,8 @@
 
 A professional, bold, responsive, and animated event management website built with modern web technologies. The design is inspired by the sleek, minimalistic dark theme of Enrique Iglesias' website, featuring smooth animations, clean layouts, and consistent typography.
 
+**🌐 Live Site:** [https://stackified.github.io/euphoric/](https://stackified.github.io/euphoric/)
+
 ## 🚀 Features
 
 - **Modern Frontend**: React.js with Vite for fast development and optimized builds
@@ -20,7 +22,7 @@ A professional, bold, responsive, and animated event management website built wi
 - **Responsive Design**: Mobile-first approach with perfect responsiveness
 - **Cookie Management**: GDPR-compliant cookie consent banner
 - **Image Gallery**: Modal image viewer with smooth zoom animations
-- **Advanced Video Gallery**:
+- **Advanced Video Gallery** (built, but the `/videos` route is currently disabled in `App.jsx`):
   - YouTube-style hover previews with sound
   - Playback position continuity (resumes from where you left off)
   - Zoom animations and smooth transitions
@@ -59,11 +61,12 @@ euphoric/
 │   │   │   ├── events.js
 │   │   │   └── reviews.js
 │   │   ├── utils/
-│   │   │   └── cache.js         # Redis caching utilities
+│   │   │   ├── cache.js         # Redis caching utilities
+│   │   │   └── validation.js    # Request validation helpers
 │   │   └── server.js           # Express server entry point
 │   └── package.json
 ├── frontend/                    # React frontend application
-│   ├── public/                 # Static assets (favicon, etc.)
+│   ├── public/                 # Static assets (favicon, 404.html SPA fallback)
 │   ├── src/
 │   │   ├── assets/            # Images, videos, logos, gallery
 │   │   ├── components/         # Reusable React components
@@ -77,6 +80,7 @@ euphoric/
 │   │   │   ├── Hero.jsx
 │   │   │   ├── Loader.jsx
 │   │   │   ├── Navbar.jsx
+│   │   │   ├── PageLoader.jsx
 │   │   │   ├── QuickActionBox.jsx
 │   │   │   ├── ServicesPreview.jsx
 │   │   │   └── videos/
@@ -130,7 +134,7 @@ euphoric/
 - **Framer Motion** - Animation library
 - **EmailJS** - Email service integration (frontend-only option)
 - **React Icons** - Icon library
-- **Three.js** - 3D graphics library (via @react-three/fiber)
+- **Three.js** - 3D graphics library (`three`, `@react-three/fiber` and `@react-three/drei` are listed in `package.json` but not currently imported in the source)
 
 ### Backend
 
@@ -156,7 +160,7 @@ euphoric/
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/euphoric.git
+git clone https://github.com/stackified/euphoric.git
 cd euphoric
 ```
 
@@ -218,6 +222,10 @@ EMAIL_HOST=smtp.gmail.com
 EMAIL_PORT=587
 EMAIL_USER=your_email@gmail.com
 EMAIL_PASS=your_app_password
+
+# Redis cache (optional)
+REDIS_ENABLED=false
+REDIS_URL=redis://localhost:6379
 ```
 
 **Note**:
@@ -344,11 +352,11 @@ The backend provides the following RESTful API endpoints:
 - **About** (`/about`) - Company information and mission
 - **Services** (`/services`) - List of all event management services with professional icons
 - **Gallery** (`/gallery`) - Image gallery with modal viewer
-- **Videos** (`/videos`) - Advanced video gallery with hover previews, playback continuity, and full-screen player
+- **Videos** (`/videos`) - Advanced video gallery with hover previews, playback continuity, and full-screen player (route and nav link currently disabled in `App.jsx` and `Navbar.jsx`)
 - **Events** (`/events`) - Upcoming events display (currently from JSON, backend API available)
 - **Contact** (`/contact`) - Contact information and quick actions
 - **Links** (`/links`) - Social media and external links
-- **Feedbacks** (`/feedbacks`) - Client reviews (currently from JSON) and feedback form (sends via EmailJS)
+- **Feedbacks** (`/feedbacks`) - Client reviews (currently from JSON) and feedback form (sends via EmailJS) (route and nav link currently disabled in `App.jsx` and `Navbar.jsx`)
 - **Enquiry** (`/enquiry`) - Contact form for event inquiries (sends via EmailJS, backend API available)
 
 ### Key Components
@@ -360,7 +368,7 @@ The backend provides the following RESTful API endpoints:
 - **ServicesPreview** - Homepage services preview
 - **EventsPreview** - Homepage events preview
 - **GalleryPreview** - Homepage gallery preview
-- **FeaturedVideos** - Homepage featured videos showcase
+- **FeaturedVideos** - Homepage featured videos showcase (currently not rendered on the Home page)
 - **VideoGallery** - Advanced video gallery component with:
   - YouTube-style hover previews with sound
   - Playback position continuity
@@ -578,7 +586,7 @@ This repository includes a GitHub Actions workflow that automatically deploys to
 4. **Automatic Deployment:**
    - The workflow will automatically build and deploy your site
    - Check the "Actions" tab to see deployment status
-   - Your site will be live at: `https://yourusername.github.io/euphoric/`
+   - The site is live at: `https://stackified.github.io/euphoric/`
 
 #### Vercel / Netlify
 
