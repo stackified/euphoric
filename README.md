@@ -751,7 +751,7 @@ A professional video player with:
 
 ## 📄 License
 
-This project is proprietary and confidential.
+Proprietary. Copyright (c) 2025-2026 EUPHORIC LIVE. All rights reserved. Designed and developed by [Stackified](https://github.com/stackified). See [LICENSE](LICENSE).
 
 ## 🤝 Contributing
 

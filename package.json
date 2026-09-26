@@ -23,7 +23,7 @@
     "mysql"
   ],
   "author": "",
-  "license": "ISC",
+  "license": "UNLICENSED",
   "devDependencies": {
     "concurrently": "^8.2.2"
   }
